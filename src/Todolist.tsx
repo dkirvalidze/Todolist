@@ -7,15 +7,19 @@ type PropsType = {
     filterTasks: (value: FilterType) => void
     addTask: (title: string) => void
 }
+
 export type TaskType = {
     id: string
     title: string
     isDone: boolean
 }
 
+
 export function Todolist(props: PropsType) {
     let [newTaskTitle, setNewTaskTitle] = useState("")
-    const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => setNewTaskTitle(e.currentTarget.value)
+    const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setNewTaskTitle(e.currentTarget.value)
+    }
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             props.addTask(newTaskTitle)
@@ -27,7 +31,7 @@ export function Todolist(props: PropsType) {
         setNewTaskTitle("")
     }
 
-    const onAllCLickHandler = () => props.filterTasks("all")
+    const onAllClickHandler = () => props.filterTasks("all")
     const onActiveClickHandler = () => props.filterTasks("active")
     const onCompleteClickHandler = () => props.filterTasks("complete")
 
@@ -35,26 +39,31 @@ export function Todolist(props: PropsType) {
         <div>
             <h3>{props.title}</h3>
             <div>
-                <input value={newTaskTitle}
+                <input
+                    value={newTaskTitle}
                     onChange={onChangeInputHandler}
                     onKeyDown={onKeyPressHandler}
+
                 />
-                <button onClick={onClickAddTask}>+</button>
+                <button
+                    onClick={onClickAddTask}
+                >+</button>
             </div>
             <ul>
                 {props.tasks.map((t) => {
-                    const onClickRemoveTask = () => props.removeTask(t.id)
+                    const onClickRemoveHandler = () => props.removeTask(t.id)
                     return (
                         <li key={t.id}>
                             <input type="checkbox" checked={t.isDone} />
                             <span>{t.title}</span>
-                            <button onClick={onClickRemoveTask}>x</button>
+                            <button onClick={onClickRemoveHandler}>x</button>
                         </li>
                     )
                 })}
+
             </ul>
             <div>
-                <button onClick={onAllCLickHandler}>All</button>
+                <button onClick={onAllClickHandler}>All</button>
                 <button onClick={onActiveClickHandler}>Active</button>
                 <button onClick={onCompleteClickHandler}>Complete</button>
             </div>
