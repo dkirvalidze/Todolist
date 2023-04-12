@@ -1,5 +1,6 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from "react";
-import { FilterType } from "./App";
+import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import {FilterType} from "./App";
+
 type PropsType = {
     title: string
     tasks: Array<TaskType>
@@ -24,23 +25,22 @@ export function Todolist(props: PropsType) {
         setNewTaskTitle(e.currentTarget.value)
     }
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (newTaskTitle.trim() !== "") {
+        if(newTaskTitle.trim() !== "") {
             if (e.key === "Enter") {
                 props.addTask(newTaskTitle.trim())
                 setNewTaskTitle("")
+            } else {
+                setError("Please fill out the form")
             }
-
-        } else {
-            setError("Title required")
         }
     }
     const onClickAddTask = () => {
-        if (newTaskTitle.trim() !== "") {
-            props.addTask(newTaskTitle.trim())
-            setNewTaskTitle("")
-        } else {
-            setError("Title required")
-        }
+            if(newTaskTitle.trim() !== "") {
+                props.addTask(newTaskTitle.trim())
+                setNewTaskTitle("")
+            } else {
+                setError("Please fill out the form")
+            }
     }
 
     const onAllClickHandler = () => props.filterTasks("all")
@@ -55,21 +55,24 @@ export function Todolist(props: PropsType) {
                     value={newTaskTitle}
                     onChange={onChangeInputHandler}
                     onKeyDown={onKeyPressHandler}
-                    className={error ? "error" : ""}
+                    className={error? "error" : ""}
                 />
                 <button
                     onClick={onClickAddTask}
-                >+</button>
-                {error && <div className="error-message">Field is required</div>}
+                >+
+                </button>
+                {error && <div className={"error-message"}>{error}</div>}
             </div>
             <ul>
                 {props.tasks.map((t) => {
                     const onClickRemoveHandler = () => props.removeTask(t.id)
-                    const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(t.id, e.currentTarget.checked)
+                    const onChangeHandler =(e:ChangeEvent<HTMLInputElement>)=> props.changeTaskStatus(t.id, e.currentTarget.checked)
                     return (
-                        <li key={t.id} className={t.isDone ? "is-done" : ""}>
+                        <li key={t.id}
+                            className={t.isDone? "is-done" : ""}
+                        >
                             <input type="checkbox" checked={t.isDone}
-                                onChange={onChangeStatusHandler}
+                                   onChange={onChangeHandler}
                             />
                             <span>{t.title}</span>
                             <button onClick={onClickRemoveHandler}>x</button>
@@ -80,16 +83,22 @@ export function Todolist(props: PropsType) {
             </ul>
             <div>
                 <button onClick={onAllClickHandler}
-                    className={props.filter === "all" ? "active-filter" : ""}>
-                    All</button>
+                className={props.filter ==="all"? "active-filter" : ""}
+                >
+                    All
+                </button>
                 <button
+                    onClick={onActiveClickHandler}
                     className={props.filter === "active" ? "active-filter" : ""}
-                    onClick={onActiveClickHandler}>
-                    Active</button>
+                >
+                    Active
+                </button>
                 <button
+                    onClick={onCompleteClickHandler}
                     className={props.filter === "complete" ? "active-filter" : ""}
-                    onClick={onCompleteClickHandler}>
-                    Complete</button>
+                >
+                    Complete
+                </button>
             </div>
         </div>
     )
